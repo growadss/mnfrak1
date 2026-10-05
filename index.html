@@ -175,14 +175,6 @@ document.addEventListener('keydown',function(e){ if(e.key==='Escape') closePP();
 var cta=document.getElementById('cta');
 cta.href=TELEGRAM_LINK;
 
-// Telegram app ka direct link (tg://) banata hai — public channel aur invite link dono ke liye
-function tgAppLink(url){
-  var m=url.match(/t\.me\/(?:\+|joinchat\/)([\w-]+)/);
-  if(m) return 'tg://join?invite='+m[1];
-  var u=url.match(/t\.me\/([\w]+)/);
-  return u ? 'tg://resolve?domain='+u[1] : url;
-}
-
 // Subscribe event sirf ek baar per user (double click / refresh se duplicate nahi)
 var fired=false;
 function alreadySent(){ try{ return localStorage.getItem('twm_sub')==='1'; }catch(_){ return false; } }
@@ -218,12 +210,7 @@ var clickedAt=0;
 function goTelegram(){
   clickedAt=Date.now();
   try{ sessionStorage.setItem('twm_clicked','1'); }catch(_){}
-  var start=Date.now();
-  if(!/android/i.test(navigator.userAgent)){ window.location.href=TELEGRAM_LINK; return; } // iPhone/others: seedha t.me
-  window.location.href=tgAppLink(TELEGRAM_LINK);             // Android: pehle Telegram app
-  setTimeout(function(){                                       // app nahi khula to normal link
-    if(!document.hidden && Date.now()-start<2500) window.location.href=TELEGRAM_LINK;
-  },1500);
+  window.location.href=TELEGRAM_LINK;                         // seedha t.me — page par koi app-open popup nahi
 }
 
 // Device ke hisaab se sahi store link
